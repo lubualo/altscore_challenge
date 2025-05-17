@@ -16,9 +16,9 @@ class ApiClient:
             headers.update(extra_headers)
         return headers
 
-    def get(self, url, headers=None):
+    def get(self, url, params=None, headers=None):
         try:
-            response = requests.get(url, headers=self._get_headers(headers))
+            response = requests.get(url, headers=self._get_headers(headers), params=params)
             if response.status_code == 200:
                 return response.json()
             else:
