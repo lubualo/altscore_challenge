@@ -17,7 +17,7 @@ def main():
     # Possible improvement: use a dataclass instead of a dictionary for the api response
     distance = convertStringMeasuermentToFloat(response["distance"])
     time = convertStringMeasuermentToFloat(response["time"])
-    speed = round(distance // time)
+    speed = round(distance / time)
     print("Speed: " + str(speed))
     response = api_client.post(solution_post_url, {"speed": str(speed)})
     print(response)
