@@ -5,20 +5,9 @@ import os
 load_dotenv()
 
 class ApiClient:
-    def __init__(self):
-        self.api_key = os.getenv("API_KEY")
-
-    def _get_headers(self, extra_headers=None):
-        headers = {
-            "API-KEY": self.api_key  # Custom header expected by the API
-        }
-        if extra_headers:
-            headers.update(extra_headers)
-        return headers
-
-    def get(self, url, params=None, headers=None):
+    def get(self, url, params=None, headers=None, verify=True):
         try:
-            response = requests.get(url, headers=self._get_headers(headers), params=params)
+            response = requests.get(url, headers=headers, params=params, verify=verify)
             if response.status_code == 200:
                 return response.json()
             else:
@@ -28,7 +17,7 @@ class ApiClient:
 
     def post(self, url, data=None, headers=None):
         try:
-            response = requests.post(url, json=data, headers=self._get_headers(headers))
+            response = requests.post(url, json=data, headers=headers)
             if response.status_code in [200, 201]:
                 return response.json()
             else:

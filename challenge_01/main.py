@@ -6,12 +6,13 @@ import re
 def main():
     load_dotenv()
     base_url = os.getenv("BASE_URL")
+    api_key = os.getenv("API_KEY")
     api_client = ApiClient()
     get_url = base_url + "/v1/s1/e1/resources/measurement"
     solution_post_url = base_url + "/v1/s1/e1/solution"
-    response = api_client.get(get_url)
+    response = api_client.get(get_url, headers={"API-KEY": api_key })
     while (response["distance"] == 'failed to measure, try again' and response["time"] == 'failed to measure, try again'):
-        response = api_client.get(get_url)
+        response = api_client.get(get_url, headers={"API-KEY": api_key })
 
     print(response)
     # Possible improvement: use a dataclass instead of a dictionary for the api response
@@ -19,7 +20,7 @@ def main():
     time = convertStringMeasuermentToFloat(response["time"])
     speed = round(distance / time)
     print("Speed: " + str(speed))
-    response = api_client.post(solution_post_url, {"speed": str(speed)})
+    response = api_client.post(solution_post_url, {"speed": str(speed)}, {"API-KEY": api_key })
     print(response)
 
 def convertStringMeasuermentToFloat(timeString):
